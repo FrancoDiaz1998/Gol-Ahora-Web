@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Times New Roman', Times, serif
+}
+
+body{
+    background-color: #111;
+}
+
+a{
+    text-decoration: none;
+    background-color: #0b0f24;
+    color: #FFF;
+    padding: 6px;
+    font-size: 1.2rem;
+}
+
+.contenedor-header{
+
+}
+
+.button-volver{
+
+}

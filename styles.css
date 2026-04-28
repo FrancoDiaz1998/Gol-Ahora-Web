@@ -13,7 +13,7 @@ body{
     background-image: url("./assets/background.png");
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
     backdrop-filter: blur(1px);
 }
 
@@ -370,7 +370,7 @@ a{
 
 .cta p {
     margin-bottom: 1rem;
-    color: #555;
+    color: #000;
 }
 
 /*------- FOOTER -------*/
@@ -395,6 +395,10 @@ footer p{
 
 
 @media (min-width: 776px){
+    
+    body{
+        background-attachment: fixed;
+    }
 
     .menu-toggle{
         display: none;
