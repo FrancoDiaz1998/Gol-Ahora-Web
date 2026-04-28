@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gol Ahora | El Buen Deporte</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container-header">
+            <div class="logo">
+                <img src="./assets/logo.png" alt="Logo de Gol Ahora">
+            </div>
+            <nav class="nav-header" id="nav">
+                <ul class="ul-nav-header">
+                    <li class="li-nav-header"><a href="#" class="a-nav-header">Inicio</a></li>
+                    <li class="li-nav-header"><a href="#" class="a-nav-header">Noticias</a></li>
+                    <li class="li-nav-header"><a href="#" class="a-nav-header">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="buttons-header">
+                <button class="button-header">Registrarse</button>
+                <button class="button-header">Iniciar Sesión</button>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                ☰
+            </div>
+        </div>
+    </header>
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container">
+                <div class="presentacion-hero">
+                    <h1>Reservá tu cancha en segundos ⚽</h1>
+                    <p>Gestioná reservas, torneos, clases y mucho más en un solo lugar.</p>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#" class="btn-primary">Reservar ahora</a>
+                    <a href="#" class="btn-secondary">Ver canchas</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES PRINCIPALES -->
+        <section class="info">
+            <div class="container">
+                <div class="h2">
+                    <h2>¿Qué esperás para empezar?</h2>
+                </div>
+                
+
+                <div class="grid-info">
+
+                    <div class="card">
+                        <h3>👤 Hacete cliente</h3>
+                        <p>Registro, modificación, consultas y administración ultra simple y completa del sistema.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🏟️ Canchas</h3>
+                        <p>Alquilá distintos tipos de canchas con 100% de disponibilidad en segundos.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📅 Reservas Inteligentes</h3>
+                        <p>Reservá o cancela en cualquier momento. (Consultar políticas de reembolso).</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🏆 Torneos y Ligas</h3>
+                        <p>Inscribite como jugador a torneos y ligas de diferentes categorias.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🏃 Clases y Entrenamientos</h3>
+                        <p>Inscribite a clases y entrenamientos personalizadas con los mejores profesionales.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>💳 Cobros y Pagos</h3>
+                        <p>Aceptamos todos los medios de pago electrónicos y efectivo.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- COMO FUNCIONA -->
+        <section class="como-funciona">
+            <div class="container">
+                <div class="h2">
+                    <h2>¿Cómo funciona?</h2>
+                </div>
+                
+
+                <div class="steps">
+                    <div class="step">
+                        <span>1</span>
+                        <h3>Elegí tu cancha</h3>
+                        <p>Consultá disponibilidad en tiempo real.</p>
+                    </div>
+
+                    <div class="step">
+                        <span>2</span>
+                        <h3>Reservá</h3>
+                        <p>Seleccioná fecha y horario en segundos.</p>
+                    </div>
+
+                    <div class="step">
+                        <span>3</span>
+                        <h3>Pagá y jugá</h3>
+                        <p>Confirmación automática con pago validado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEFICIOS / DIFERENCIAL -->
+        <section class="beneficios">
+            <div class="container">
+                <div class="h2">
+                    <h2>¿Por qué usar Gol Ahora?</h2>
+                </div>
+                
+                <ul class="beneficios-list">
+                    <li>✔ Reservas con hasta 30 días de anticipación</li>
+                    <li>✔ Bloqueo de canchas por mantenimiento</li>
+                    <li>✔ Sistema rápido y seguro</li>
+                    <li>✔ Compatible con PC, Android e iOS</li>
+                    <li>✔ Integración con pagos electrónicos</li>
+                    <li>✔ Reportes de ingresos, asistencia y reservas</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="cta">
+            <div class="container-end">
+                <div class="h2-end">
+                    <h2>Empezá a jugar hoy</h2>
+                    <p>Unite a la mejor plataforma de gestión deportiva.</p>
+                </div>
+                <a href="#" class="btn-primary">Crear cuenta</a>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <p>&copy; 2026 Gol Ahora. Todos los derechos reservados.</p>
+        <p>Creado por el grupo 2 de la comisión 1</p>
+        <p>Integrantes: Franco Díaz, Milena, Nahuel, Cristian, Mateo, Julieta, Joaquin</p>
+    </footer>
+
+    <script>
+        const toggle = document.getElementById("menu-toggle");
+        const nav = document.getElementById("nav");
+
+        toggle.addEventListener("click", () => {
+            nav.classList.toggle("active");
+        });
+    </script>
+</body>
+</html>
