@@ -14,7 +14,6 @@ body{
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    backdrop-filter: blur(1px);
 }
 
 /*-------- HEADER ---------*/
@@ -123,6 +122,48 @@ a{
     transform: scale(0.95);
 }
 
+.modal-contacto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+
+    background: rgba(0,0,0,0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+
+.modal-contacto.activo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    background: rgb(132, 115, 227);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px rgba(0,0,0);
+    position: relative;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 200;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
 /* BOTONES */
 .buttons-header{
     display: flex;
@@ -153,6 +194,10 @@ a{
 }
 
 /*------- MAIN --------*/
+
+main{
+    backdrop-filter: blur(1px);
+}
 
 .hero {
     text-align: center;
@@ -533,4 +578,5 @@ footer p{
         width: 80%;
     }
 }
+
 

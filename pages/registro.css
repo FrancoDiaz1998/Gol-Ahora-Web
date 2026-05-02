@@ -6,21 +6,181 @@
 }
 
 body{
-    background-color: #111;
+    min-height: 100dvh;
+    background-image: url(.././assets/RLMobile.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #CCC;
+
 }
 
 a{
     text-decoration: none;
-    background-color: #0b0f24;
     color: #FFF;
     padding: 6px;
-    font-size: 1.2rem;
+    font-size: 0.8rem;
+}
+
+h2{
+    font-size: 1.6rem;
+    color: #8e36cc;
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 .contenedor-header{
-
+    padding: 1rem;
+    margin-bottom: 3px;
 }
 
 .button-volver{
+    background-color: rgb(85, 61, 88);
+    color: #CCC;
+    border: 2px solid #8e36cc;
+    border-radius: 10px;
+    padding: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
+.button-volver:hover{
+    background-color: #8e36cc;
+    transform: scale(1.1);
+    
+}
+
+.contenedor-formulario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; 
+}
+
+.formulario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    background-color: #111111e5;
+    margin: 8px 0;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 2px 1px 7px #8e36cc;
+}
+
+.grupos-elem{
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 90%;
+}
+
+label{
+    color: chocolate;
+    text-shadow: 1px 0px 3px #dbbd43;
+    font-size: 0.8rem;
+}
+
+input{
+    color: #000;
+    padding: 0.3rem;
+    border: none;
+    border-radius: 8px;
+    border: 2px solid #8e36cc;
+    width: 70%;
+    background-color: #CCC;
+    font-size: 0.7rem;
+}
+
+input::placeholder{
+    color: #000;
+}
+
+input:focus{
+    outline: none;
+    border-color: #dbbd43;
+    box-shadow: 0 0 2px #dbbd43;
+}
+
+.input-nombre
+{
+    width: 70%;
+}
+
+.input-apellido{
+    width: 40%;
+}
+
+.input-email{
+    width: 70%;
+}
+.nom-ape{
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.button-submit{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(85, 61, 88);
+    color: #CCC;
+    border: 2px solid #8e36cc;
+    border-radius: 10px;
+    padding: 0.4rem;
+    cursor: pointer;
+    width: 60%;
+    transition: all 0.3s ease;
+}
+
+.button-submit:hover{
+    background-color: #8e36cc;
+    transform: scale(1.1);
+}
+
+.button-sub{
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos para pantallas medianas y grandes */
+@media (min-width: 768px) {
+    body{
+        background-image: url(.././assets/RLDesktop.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    h2{
+        font-size: 2rem;
+    }
+
+    label{
+        font-size: 1.1rem;
+    }
+
+    a{
+        font-size: 1.1rem;
+    }
+
+    .input-nombre{
+        width: 40%;
+    }
+
+    .input-apellido{
+        width: 40%;
+    }
+
+    .input-dni{
+        width: 40%;
+    }
+    .nom-ape{
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .formulario{
+        width: 50%;
 }
