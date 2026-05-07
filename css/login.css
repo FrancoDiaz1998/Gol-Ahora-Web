@@ -94,8 +94,8 @@ h1{
 }
 
 label{
-    color: chocolate;
-    text-shadow: 0px 0px 2px #dbbd43;
+    color: #dbbd43;
+    text-shadow: 0px 0px 1px #dbbd43;
     font-size: 1rem;
 }
 
