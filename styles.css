@@ -1,58 +1,74 @@
-*{
+:root {
+    --color-primary:    #0b0f24;
+    --color-accent:     #00c853;
+    --color-text:       #000;
+    --color-bg-glass:   rgba(255, 255, 255, 0.6);
+    --color-footer-bg:  #2b2c29;
+    --color-footer-txt: #ccc;
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:'Times New Roman', Times, serif
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-body{
+body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100dvh;
-    color: #444;
+    color: var(--color-text);
     background-image: url("./assets/background.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-/*-------- HEADER ---------*/
+:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
 
-header{
+/* =====================================================
+   HEADER
+   ===================================================== */
+header {
     background-color: #ffffff;
     text-align: center;
 }
 
-h1{
+h1 {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #000;
+    color: var(--color-text); /* era #000 */
 }
 
-h2{
-    color: #000;
+h2 {
+    color: var(--color-text); /* era #000 */
 }
 
-p{
-    color: #000;
+p {
+    color: var(--color-text); /* era #000 */
     font-size: 1.1rem;
     font-weight: 700;
 }
 
-.logo{
+.logo {
     height: 60px;
     display: flex;
     align-items: center;
 }
 
-.logo img{
+.logo img {
     height: 100%;
     width: 90px;
     object-fit: contain;
 }
 
 /* MOBILE FIRST */
-.container-header{
+.container-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -61,7 +77,7 @@ p{
 }
 
 /* NAV oculto en mobile */
-.nav-header{
+.nav-header {
     position: absolute;
     top: 80px;
     right: 0;
@@ -74,63 +90,60 @@ p{
     z-index: 5;
 }
 
-.nav-header.active{
+.nav-header.active {
     display: flex;
 }
 
-.ul-nav-header{
+.ul-nav-header {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.li-nav-header{
+.li-nav-header {
     list-style: none;
     margin-right: 10px;
     transition: transform 0.1s ease;
 }
 
-.li-nav-header:active{
-    color: #0b0f24;
+.li-nav-header:active {
+    color: var(--color-primary); /* era #0b0f24 */
     transform: scale(0.95);
 }
 
-a{
+a {
     text-decoration: none;
-    background-color: #0b0f24;
-    color: #FFF;
-    padding: 6px;
-    font-size: 1.2rem;
 }
 
-.a-nav-header{
-    border: none;
-    outline: none;
+.a-nav-header {
+    background-color: var(--color-primary); /* era #0b0f24 */
     color: #fff;
+    padding: 6px;
+    font-size: 1.2rem;
+    outline: none;
     cursor: pointer;
     position: relative;
     z-index: 0;
-    border: 2px solid #0b0f24;
+    border: 2px solid var(--color-primary); /* era #0b0f24 */
     border-radius: 10px;
     transition: transform 0.2s ease;
     display: block;
     margin-top: 8px;
 }
 
-.a-nav-header:active{
-    color: #0b0f24;
+.a-nav-header:active {
+    color: var(--color-primary); /* era #0b0f24 */
     transform: scale(0.95);
 }
 
+/* MODAL */
 .modal-contacto {
     position: fixed;
     top: 0;
     left: 0;
     width: 100dvw;
     height: 100dvh;
-
-    background: rgba(0,0,0,0.5);
-
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,7 +162,7 @@ a{
     background: rgb(132, 115, 227);
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 1px 1px 20px rgba(0,0,0);
+    box-shadow: 1px 1px 20px rgba(0, 0, 0);
     position: relative;
     width: 80%;
     max-width: 400px;
@@ -164,17 +177,17 @@ a{
     cursor: pointer;
 }
 
-/* BOTONES */
-.buttons-header{
+/* BOTONES HEADER */
+.buttons-header {
     display: flex;
 }
 
-.button-header{
+.button-header {
     box-sizing: border-box;
     font-size: 1rem;
-    background-color: #0b0f24;
+    background-color: var(--color-primary);
     color: #fff;
-    border: 2px solid #0b0f24;
+    border: 2px solid var(--color-primary); 
     border-radius: 10px;
     cursor: pointer;
     padding: 5px 2px;
@@ -182,20 +195,21 @@ a{
     margin-left: 0.3rem;
 }
 
-.button-header:hover:active{
+.button-header:hover:active {
     transform: scale(0.95);
 }
 
 /* HAMBURGUESA */
-.menu-toggle{
+.menu-toggle {
     font-size: 1.5rem;
     cursor: pointer;
     display: block;
 }
 
-/*------- MAIN --------*/
-
-main{
+/* =====================================================
+                    MAIN
+   ===================================================== */
+main {
     backdrop-filter: blur(1px);
 }
 
@@ -204,12 +218,12 @@ main{
     padding: 4rem 0 3rem;
 }
 
-.presentacion-hero{
+.presentacion-hero {
     padding: 1.5rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--color-bg-glass);
     backdrop-filter: blur(10px);
-    box-shadow: -2px 8px 20px rgba(0,0,0);
+    box-shadow: -2px 8px 20px rgba(0, 0, 0);
     transition: 0.3s;
     margin-bottom: 8px;
 }
@@ -227,8 +241,7 @@ main{
     font-size: 1.1rem;
     font-weight: 900;
     margin-bottom: 1.5rem;
-    color: #000000;
-    text-overflow: wrap;
+    color: var(--color-text);
     word-break: break-word;
 }
 
@@ -244,7 +257,6 @@ main{
 .btn-secondary {
     padding: 0.8rem;
     border-radius: 10px;
-    text-decoration: none;
     font-weight: 600;
     transition: 0.3s;
     display: block;
@@ -252,8 +264,8 @@ main{
 }
 
 .btn-primary {
-    background: #0b0f24;
-    border: 2px solid #0b0f24;
+    background: var(--color-primary);
+    border: 2px solid var(--color-primary); 
     color: white;
 }
 
@@ -262,8 +274,9 @@ main{
 }
 
 .btn-secondary {
-    border: 2px solid #0b0f24;
+    border: 2px solid var(--color-primary);
     color: #ffffff;
+    background: rgba(11, 15, 36, 0.78);
 }
 
 .btn-secondary:active {
@@ -273,14 +286,14 @@ main{
 .galeria {
     display: flex;
     width: 100%;
-    aspect-ratio: 4 / 3;
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.5s ease;
+    /* SIN aspect-ratio en mobile */
 }
 
 .galeria.abierta {
-    max-height: 430px;
+    max-height: 220px;
 }
 
 .galeria img {
@@ -291,7 +304,6 @@ main{
     transition: all 0.4s ease;
 }
 
-/* Cuando se toca (focus/active) */
 .galeria img:active,
 .galeria img:focus {
     flex: 3;
@@ -299,19 +311,19 @@ main{
     filter: contrast(120%);
 }
 
+/* INFO / CARDS */
 .info {
     padding: 2rem 0;
 }
 
-.h2{
+.h2 {
     padding: 0.5rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--color-bg-glass);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 2px 2px 15px rgba(0, 0, 0);
     transition: 0.3s;
     margin-bottom: 8px;
-    box-shadow: 2px 2px 15px rgba(0,0,0);
 }
 
 .info h2 {
@@ -324,13 +336,12 @@ main{
     gap: 1rem;
 }
 
-/* CARD GLASS */
 .card {
     padding: 1.5rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--color-bg-glass);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     transition: 0.3s;
     text-align: center;
 }
@@ -341,16 +352,16 @@ main{
 
 .card h3 {
     margin-bottom: 0.5rem;
-    color: #000;
+    color: var(--color-text); 
 }
 
 .card p {
     font-size: 0.9rem;
     font-weight: 700;
-    color: #000;
+    color: var(--color-text);
 }
 
-/* ================= Como funciona ================= */
+/* CÓMO FUNCIONA */
 .como-funciona {
     padding: 3rem 0;
     text-align: center;
@@ -364,7 +375,7 @@ main{
 }
 
 .step {
-    background: rgba(255,255,255,0.6);
+    background: var(--color-bg-glass); 
     padding: 1.2rem;
     border-radius: 14px;
     backdrop-filter: blur(8px);
@@ -374,7 +385,7 @@ main{
     display: inline-block;
     width: 35px;
     height: 35px;
-    background: #00c853;
+    background: var(--color-accent);
     color: white;
     border-radius: 50%;
     line-height: 35px;
@@ -382,7 +393,7 @@ main{
     margin-bottom: 0.5rem;
 }
 
-
+/* BENEFICIOS */
 .beneficios {
     padding: 2.4rem 0;
 }
@@ -402,34 +413,35 @@ main{
 }
 
 .beneficios-list li {
-    background: rgba(255,255,255,0.6);
+    background: var(--color-bg-glass);
     padding: 0.8rem;
     border-radius: 10px;
     backdrop-filter: blur(6px);
     font-size: 0.95rem;
-    width: 70%;
+    width: 100%;
+    max-width: 380px;
 }
 
-.beneficios-list li:active{
+.beneficios-list li:active {
     transform: scale(0.90);
 }
 
-.container-end{
+/* CTA */
+.container-end {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
 }
 
-.h2-end{
+.h2-end {
     padding: 0.4rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--color-bg-glass); /* era rgba(255,255,255,0.6) */
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 2px 2px 15px rgba(0, 0, 0);
     transition: 0.3s;
     margin-bottom: 8px;
-    box-shadow: 2px 2px 15px rgba(0,0,0);
     width: 100%;
 }
 
@@ -444,37 +456,76 @@ main{
 
 .cta p {
     margin-bottom: 1rem;
-    color: #000;
+    color: var(--color-text); /* era #000 */
 }
 
-/*------- FOOTER -------*/
-
-footer{
-    background-color: #2b2c29;
+footer {
+    background-color: var(--color-footer-bg);
     text-align: center;
     padding: 10px;
-    color: #ccc;
+    color: var(--color-footer-txt);
 }
 
-footer p{
-    color: #CCC;
+footer p {
+    color: var(--color-footer-txt);
 }
 
-/* -------- DESKTOP -------- */
+
+/* =====================================================
+    Breakpoint intermedio 480px (NUEVO)
+   ===================================================== */
+@media (min-width: 480px) {
+
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .grid-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .step {
+        flex: 1;
+    }
+
+    .beneficios-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .beneficios-list li {
+        max-width: none;
+        width: 85%;
+    }
+}
+
+
+/* =====================================================
+   BREAKPOINT 690px — sin cambios al original
+   ===================================================== */
 @media (min-width: 690px) {
-    .logo img{
+    .logo img {
         width: auto;
     }
 }
 
 
-@media (min-width: 776px){
+/* =====================================================
+   BREAKPOINT DESKTOP 776px
+   ===================================================== */
+@media (min-width: 776px) {
 
-    .menu-toggle{
+    .menu-toggle {
         display: none;
     }
 
-    .nav-header{
+    .nav-header {
         position: static;
         display: flex;
         flex-direction: row;
@@ -483,35 +534,35 @@ footer p{
         padding: 0;
     }
 
-    .ul-nav-header{
+    .ul-nav-header {
         flex-direction: row;
         gap: 15px;
     }
 
-    .container-header{
+    .container-header {
         padding: 20px;
     }
 
-    .a-nav-header{
+    .a-nav-header {
         margin-top: 0;
     }
 
-    .a-nav-header:hover{
-    background-color: #8797be;
-    color: #0b0f24;
-    box-shadow: 1px 0px 10px #17193b;
+    .a-nav-header:hover {
+        background-color: #8797be;
+        color: var(--color-primary); /* era #0b0f24 */
+        box-shadow: 1px 0px 10px #17193b;
     }
 
-    .button-header{
-    font-size: 1.3rem;
-    padding: 5px;
-    margin-left: 1rem;
+    .button-header {
+        font-size: 1.3rem;
+        padding: 5px;
+        margin-left: 1rem;
     }
 
-    .button-header:hover{
-    background-color: #8797be;
-    color: #0b0f24;
-    box-shadow: 1px 0px 10px #17193b;
+    .button-header:hover {
+        background-color: #8797be;
+        color: var(--color-primary); /* era #0b0f24 */
+        box-shadow: 1px 0px 10px #17193b;
     }
 
     .hero h1 {
@@ -525,7 +576,7 @@ footer p{
     }
 
     .btn-primary,
-    .btn-secondary{
+    .btn-secondary {
         max-width: 24rem;
     }
 
@@ -540,6 +591,7 @@ footer p{
     }
 
     .galeria {
+        aspect-ratio: 4 / 3;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.5s ease;
@@ -569,14 +621,12 @@ footer p{
         flex: 1;
     }
 
-    .beneficios-list{
+    .beneficios-list {
         grid-template-columns: repeat(2, 1fr);
-
     }
 
-    .beneficios-list li{
+    .beneficios-list li {
         width: 80%;
+        max-width: none;
     }
 }
-
-

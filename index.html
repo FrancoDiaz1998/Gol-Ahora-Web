@@ -2,10 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Reservá canchas de fútbol, inscribite a torneos y clases deportivas en Gol Ahora.">
+    <meta name="keywords" content="reserva canchas, fútbol, torneos, clases deportivas">
+    <meta name="author" content="Grupo 2 - Comisión 1">
+    <meta property="og:title" content="Gol Ahora | Reservá tu cancha en segundos">
+    <meta property="og:description" content="Gestión de canchas, torneos y clases deportivas en un solo lugar.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gol Ahora">
     <title>Gol Ahora | El Buen Deporte</title>
     <script src="home.js" defer></script>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="image" href="./assets/background.png">
+    <link rel="preload" as="image" href="./assets/logo.png">
     <link rel="icon" href="./assets/favicon.png" type="image/png">
 </head>
 <body>
@@ -14,16 +24,15 @@
             <div class="logo">
                 <img src="./assets/logo.png" alt="Logo de Gol Ahora">
             </div>
-            <nav class="nav-header" id="nav">
+            <nav class="nav-header" id="nav" aria-label="Navegación principal">
                 <ul class="ul-nav-header">
                     <li class="li-nav-header"><a href="index.html" class="a-nav-header">Inicio</a></li>
-                    <li class="li-nav-header"><a href="#" class="a-nav-header">Noticias</a></li>
                     <li class="li-nav-header"><a href="#" class="a-nav-header contacto">Contacto</a></li>
                 </ul>
             </nav>
               <div class="modal-contacto" id="modal-contacto">
-                <div class="modal-box">
-                    <span class="cerrar-modal" id="cerrar-modal">✖</span>
+                <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+                    <span class="cerrar-modal" id="cerrar-modal" >✖</span>
                     <h3>Contacto</h3>
                     <p>📸 Instagram: @golahora</p>
                     <p>📞 Teléfono: 11-1234-5678</p>
@@ -31,12 +40,10 @@
                 </div>
             </div>
             <div class="buttons-header">
-                <button class="button-header" onclick="window.location.href='./pages/registro.html'">Registrarse</button>
-                <button class="button-header" onclick="window.location.href='./pages/login.html'">Iniciar Sesión</button>
+                <a class="button-header" href="./pages/registro.html">Registrarse</a>
+                <a class="button-header" href="./pages/login.html">Iniciar Sesión</a>
             </div>
-            <div class="menu-toggle" id="menu-toggle">
-                ☰
-            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
         </div>    
     </header>
     <main>
@@ -54,9 +61,9 @@
             </div>
         </section>
         <section class="galeria">
-            <img src="./assets/Cancha1.png">
-            <img src="./assets/Cancha2.png">
-            <img src="./assets/Cancha3.png">
+            <img src="./assets/Cancha1.png" loading="lazy" alt="Cancha de fútbol 5">
+            <img src="./assets/Cancha2.png" loading="lazy" alt="Cancha de fútbol 7">
+            <img src="./assets/Cancha3.png" loading="lazy" alt="Cancha de fútbol 11">
         </section>
 
         <!-- FEATURES PRINCIPALES -->
@@ -158,7 +165,7 @@
                     <h2>Empezá a jugar hoy</h2>
                     <p>Unite a la mejor plataforma de gestión deportiva.</p>
                 </div>
-                <a href="#" class="btn-primary" onclick="window.location.href='./pages/registro.html'">Crear cuenta</a>
+                <a href="./pages/registro.html" class="btn-primary">Crear cuenta</a>
             </div>
         </section>
 
