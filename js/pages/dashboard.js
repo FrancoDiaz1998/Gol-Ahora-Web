@@ -110,7 +110,7 @@ function initSidebar() {
 function initLogout() {
     document.getElementById('logout-btn')?.addEventListener('click', () => {
         if (confirm('¿Cerrar sesión?')) {
-            window.location.href = '../../../index.html';
+            window.location.href = '../../index.html';
         }
     });
 }
