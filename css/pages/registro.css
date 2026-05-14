@@ -13,7 +13,7 @@
 
 body{
     min-height: 100dvh;
-    background-image: url(.././assets/RLMobile.png);
+    background-image: url(../../assets/RLMobile.png);
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -217,7 +217,7 @@ input:focus{
 /* Estilos para pantallas medianas y grandes */
 @media (min-width: 768px) {
     body{
-        background-image: url(../assets/RLDesktop.png);
+        background-image: url(../../assets/RLDesktop.png);
         background-size: cover;
         background-repeat: no-repeat;
     }

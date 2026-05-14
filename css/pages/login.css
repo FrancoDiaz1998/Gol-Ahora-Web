@@ -18,7 +18,7 @@
 
 body{
     min-height: 100dvh;
-    background-image: url(.././assets/RLMobile.png);
+    background-image: url(../../assets/RLMobile.png);
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -200,7 +200,7 @@ input:focus{
 
 @media (min-width: 768px) {
     body{
-        background-image: url(../assets/RLDesktop.png);
+        background-image: url(../../assets/RLDesktop.png);
     }
 
     h1{

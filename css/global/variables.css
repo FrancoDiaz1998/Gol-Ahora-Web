@@ -1,0 +1,25 @@
+:root {
+    /* Colores Base */
+    --bg:           #f4f7fb;
+    --sidebar:      #0a0a0a;
+    --sidebar-hover:#1f2937;
+    --card:         #ffffff;
+    --border:       #e5e7eb;
+    
+    /* Tipografía y Texto */
+    --text:         #0f172a;
+    --text-light:   #64748b;
+    
+    /* Acentos Vívidos */
+    --purple:       #7c3aed;
+    --purple-soft:  #ede9fe;
+    --yellow:       #facc15;
+    --green:        #22c55e;
+    --blue:         #3b82f6;
+    --red:          #ef4444;
+    
+    /* Efectos */
+    --shadow:       0 10px 30px rgba(15, 23, 42, 0.06);
+    --radius:       20px;
+    --transition:   all 0.3s ease;
+}

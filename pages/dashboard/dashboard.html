@@ -5,20 +5,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | Gol Ahora</title>
-    <meta name="description"content="Panel administrativo de Gol Ahora para gestión de reservas, clientes, canchas, pagos y torneos." />
+    <meta name="description" content="Panel administrativo de Gol Ahora para gestión de reservas, clientes, canchas, pagos y torneos." />
+    <link rel="stylesheet" href="../../css/global/variables.css" />
+    <link rel="stylesheet" href="../../css/global/reset.css" />
+    <link rel="stylesheet" href="../../css/global/layout.css" />
+    <link rel="stylesheet" href="../../css/global/components.css" />
     <link rel="stylesheet" href="../../css/pages/dashboard.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="../../assets/favicon.png" type="image/png">
+    <!-- Scripts: los módulos primero, el router al final -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="../../js/pages/dashboard.js"></script>
+    <script src="../../js/modules/usuarios/usuarios.js"></script>
+    <script src="../../js/modules/usuarios/profesores.js"></script>
+    <script src="../../js/modules/usuarios/empleados.js"></script>
+    <script src="../../js/modules/canchas/canchas.js"></script> 
 </head>
 
 <body>
-
     <div class="dashboard-layout">
+
         <!-- SIDEBAR -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-top">
                 <a href="../../../index.html" class="logo">
                     <span class="logo-ball">⚽</span>
@@ -29,7 +39,7 @@
                     <!-- GENERAL -->
                     <div class="nav-section">
                         <p class="nav-title">General</p>
-                        <a href="#" class="nav-link active">
+                        <a href="#" class="nav-link active" data-view="home" data-label="Dashboard">
                             <i data-lucide="layout-dashboard"></i>
                             Dashboard
                         </a>
@@ -38,19 +48,19 @@
                     <!-- OPERACIONES -->
                     <div class="nav-section">
                         <p class="nav-title">Operaciones</p>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="reservas" data-label="Reservas">
                             <i data-lucide="calendar-days"></i>
                             Reservas
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="canchas" data-label="Canchas">
                             <i data-lucide="goal"></i>
                             Canchas
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="torneos" data-label="Torneos">
                             <i data-lucide="trophy"></i>
                             Torneos
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="clases" data-label="Clases">
                             <i data-lucide="dumbbell"></i>
                             Clases
                         </a>
@@ -59,15 +69,19 @@
                     <!-- PERSONAS -->
                     <div class="nav-section">
                         <p class="nav-title">Personas</p>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="usuarios" data-label="Clientes">
                             <i data-lucide="users"></i>
                             Clientes
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="profesores" data-label="Profesores">
                             <i data-lucide="user-round"></i>
                             Profesores
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="empleados" data-label="Empleados">
+                            <i data-lucide="briefcase"></i>
+                            Empleados
+                        </a>
+                        <a href="#" class="nav-link" data-view="asistencias" data-label="Asistencias">
                             <i data-lucide="clipboard-check"></i>
                             Asistencias
                         </a>
@@ -76,15 +90,15 @@
                     <!-- FINANZAS -->
                     <div class="nav-section">
                         <p class="nav-title">Finanzas</p>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="cobros" data-label="Cobros">
                             <i data-lucide="wallet"></i>
                             Cobros
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="recibos" data-label="Recibos">
                             <i data-lucide="receipt"></i>
                             Recibos
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="reportes" data-label="Reportes">
                             <i data-lucide="bar-chart-3"></i>
                             Reportes
                         </a>
@@ -93,7 +107,7 @@
                     <!-- SISTEMA -->
                     <div class="nav-section">
                         <p class="nav-title">Sistema</p>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-view="configuracion" data-label="Configuración">
                             <i data-lucide="settings"></i>
                             Configuración
                         </a>
@@ -103,33 +117,32 @@
 
             <!-- USER -->
             <div class="sidebar-user">
-                <div class="user-avatar">
-                    F
-                </div>
+                <div class="user-avatar">F</div>
                 <div class="user-info">
                     <strong>Franco</strong>
                     <span>Administrador</span>
                 </div>
-                <button class="logout-btn" aria-label="Cerrar sesión">
+                <button class="logout-btn" aria-label="Cerrar sesión" id="logout-btn">
                     <i data-lucide="log-out"></i>
                 </button>
             </div>
         </aside>
-        <div class="sidebar-overlay"></div>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
         <!-- MAIN -->
-        <main class="main-content">
+        <main class="main-content" id="main-content">
 
             <!-- TOPBAR -->
             <header class="topbar">
-                <div  class="topbar-left">
-                    <button class="menu-toggle" aria-label="Abrir menú">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
                         <i data-lucide="menu"></i>
                     </button>
-                    <h1>Dashboard</h1>
-                    <p>
-                        Bienvenido al panel de administración.
-                    </p>
+                    <div>
+                        <h1 id="topbar-title">Dashboard</h1>
+                        <p id="topbar-subtitle">Bienvenido al panel de administración.</p>
+                    </div>
                 </div>
                 <div class="topbar-actions">
                     <button class="icon-btn" aria-label="Notificaciones">
@@ -141,144 +154,11 @@
                 </div>
             </header>
 
-            <!-- DASHBOARD CONTENT -->
-            <section class="dashboard-content">
-
-                <!-- STATS -->
-                <section class="stats-grid">
-                    <article class="stat-card">
-                        <div class="stat-icon purple">
-                            <i data-lucide="calendar-check"></i>
-                        </div>
-                        <div>
-                            <span class="stat-label">Reservas Hoy</span>
-                            <h2>128</h2>
-                        </div>
-                    </article>
-                    <article class="stat-card">
-                        <div class="stat-icon yellow">
-                            <i data-lucide="wallet-cards"></i>
-                        </div>
-                        <div>
-                            <span class="stat-label">Ingresos del Día</span>
-                            <h2>$1.485.000</h2>
-                        </div>
-                    </article>
-                    <article class="stat-card">
-                        <div class="stat-icon green">
-                            <i data-lucide="goal"></i>
-                        </div>
-                        <div>
-                            <span class="stat-label">Canchas Activas</span>
-                            <h2>12</h2>
-                        </div>
-                    </article>
-                    <article class="stat-card">
-                        <div class="stat-icon blue">
-                            <i data-lucide="users"></i>
-                        </div>
-                        <div>
-                            <span class="stat-label">Clientes Activos</span>
-                            <h2>324</h2>
-                        </div>
-                    </article>
-                </section>
-
-                <!-- GRID -->
-                <section class="content-grid">
-                    <!-- RESERVAS -->
-                    <article class="panel-card">
-                        <div class="panel-header">
-                            <div>
-                                <h3>Próximas Reservas</h3>
-                                <p>Reservas confirmadas para hoy.</p>
-                            </div>
-                            <button class="panel-btn">
-                                Ver todas
-                            </button>
-                        </div>
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Cliente</th>
-                                        <th>Cancha</th>
-                                        <th>Horario</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Juan Pérez</td>
-                                        <td>Cancha 3</td>
-                                        <td>18:00</td>
-                                        <td>
-                                            <span class="badge success">
-                                                Confirmada
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Martín López</td>
-                                        <td>Cancha 1</td>
-                                        <td>19:30</td>
-                                        <td>
-                                            <span class="badge warning">
-                                                Pendiente
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lucas Díaz</td>
-                                        <td>Cancha 5</td>
-                                        <td>21:00</td>
-                                        <td>
-                                            <span class="badge success">
-                                                Confirmada
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </article>
-                    <!-- ACTIVIDAD -->
-                    <article class="panel-card">
-                        <div class="panel-header">
-                            <div>
-                                <h3>Actividad Reciente</h3>
-                                <p>Últimos movimientos del sistema.</p>
-                            </div>
-                        </div>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-dot purple"></div>
-                                <p>
-                                    Nueva reserva registrada para Cancha 2.
-                                </p>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot yellow"></div>
-                                <p>
-                                    Cobro validado correctamente.
-                                </p>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot green"></div>
-                                <p>
-                                    Nuevo cliente registrado.
-                                </p>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot blue"></div>
-                                <p>
-                                    Fixture actualizado en torneo apertura.
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                </section>
+            <!-- CONTENIDO DINÁMICO -->
+            <section class="dashboard-content" id="dashboard-content">
+                <!-- El router inyecta el contenido acá -->
             </section>
+
         </main>
     </div>
 </body>
