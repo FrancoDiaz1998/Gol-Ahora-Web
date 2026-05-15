@@ -30,7 +30,6 @@ const CanchasView = (() => {
     const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     let disponibilidades = [
-        // Cancha 1 - Fútbol 5
         { id:  1, idCancha: 1, diaSemana: 'Lunes',     horaInicio: 8,  horaFin: 23, disponible: true  },
         { id:  2, idCancha: 1, diaSemana: 'Martes',    horaInicio: 8,  horaFin: 23, disponible: true  },
         { id:  3, idCancha: 1, diaSemana: 'Miércoles', horaInicio: 8,  horaFin: 23, disponible: true  },
@@ -38,15 +37,12 @@ const CanchasView = (() => {
         { id:  5, idCancha: 1, diaSemana: 'Viernes',   horaInicio: 8,  horaFin: 23, disponible: true  },
         { id:  6, idCancha: 1, diaSemana: 'Sábado',    horaInicio: 9,  horaFin: 22, disponible: true  },
         { id:  7, idCancha: 1, diaSemana: 'Domingo',   horaInicio: 10, horaFin: 20, disponible: false },
-        // Cancha 2 - Fútbol 5
         { id:  8, idCancha: 2, diaSemana: 'Lunes',     horaInicio: 8,  horaFin: 22, disponible: true  },
         { id:  9, idCancha: 2, diaSemana: 'Viernes',   horaInicio: 8,  horaFin: 22, disponible: true  },
         { id: 10, idCancha: 2, diaSemana: 'Sábado',    horaInicio: 10, horaFin: 18, disponible: false },
-        // Cancha 3 - Fútbol 7
         { id: 11, idCancha: 3, diaSemana: 'Miércoles', horaInicio: 9,  horaFin: 21, disponible: true  },
         { id: 12, idCancha: 3, diaSemana: 'Sábado',    horaInicio: 9,  horaFin: 21, disponible: true  },
         { id: 13, idCancha: 3, diaSemana: 'Domingo',   horaInicio: 10, horaFin: 20, disponible: true  },
-        // Cancha 6 - Paddle
         { id: 14, idCancha: 6, diaSemana: 'Lunes',     horaInicio: 7,  horaFin: 22, disponible: true  },
         { id: 15, idCancha: 6, diaSemana: 'Martes',    horaInicio: 7,  horaFin: 22, disponible: true  },
         { id: 16, idCancha: 6, diaSemana: 'Sábado',    horaInicio: 8,  horaFin: 20, disponible: true  },
@@ -57,10 +53,10 @@ const CanchasView = (() => {
     //  ESTADO DE UI
     // =====================================================
 
-    let tabActivo    = 'canchas';      // 'canchas' | 'tipos' | 'disponibilidad'
+    let tabActivo    = 'canchas';
     let filtroCanchas = '';
     let filtroTipos   = '';
-    let canchaSelDispId = canchas.find(c => c.estado === 'activa')?.id || 1;
+    let canchaSelDispId = canchas.find(c => c.estado === 'activa')?.id || null;
     let bajaTargetCanchaId = null;
     let bajaTargetTipoId = null;
 
@@ -71,7 +67,6 @@ const CanchasView = (() => {
     function render() {
         return `
             <div class="canchas-module">
-
                 <div class="module-tabs">
                     <button class="module-tab ${tabActivo === 'canchas'       ? 'active' : ''}" data-tab="canchas">
                         <i data-lucide="goal"></i> Canchas
@@ -100,6 +95,14 @@ const CanchasView = (() => {
     }
 
     function renderTabContent() {
+        // Mantenimiento de estado: asegurar que en la tab de disponibilidad siempre haya una cancha activa seleccionada
+        if (tabActivo === 'disponibilidad') {
+            const checkCancha = canchas.find(c => c.id === canchaSelDispId);
+            if (!checkCancha || checkCancha.estado !== 'activa') {
+                canchaSelDispId = canchas.find(c => c.estado === 'activa')?.id || null;
+            }
+        }
+
         if (tabActivo === 'canchas')        return renderTabCanchas();
         if (tabActivo === 'tipos')          return renderTabTipos();
         if (tabActivo === 'disponibilidad') return renderTabDisponibilidad();
@@ -124,7 +127,7 @@ const CanchasView = (() => {
                     <div class="search-box">
                         <i data-lucide="search"></i>
                         <input type="text" id="search-canchas" placeholder="Buscar por nombre o tipo…"
-                               value="${filtroCanchas}" autocomplete="off">
+                            value="${filtroCanchas}" autocomplete="off">
                     </div>
                     <button class="btn-primary-action" id="btn-nueva-cancha">
                         <i data-lucide="plus"></i> Nueva cancha
@@ -187,13 +190,13 @@ const CanchasView = (() => {
                     <td>${badgeEstado(c.estado)}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="action-btn view"   title="Ver detalle" data-id="${c.id}" data-action="ver-cancha">
+                            <button class="action-btn view" title="Ver detalle" data-id="${c.id}" data-action="ver-cancha">
                                 <i data-lucide="eye"></i>
                             </button>
-                            <button class="action-btn edit"   title="Editar"      data-id="${c.id}" data-action="editar-cancha">
+                            <button class="action-btn edit" title="Editar" data-id="${c.id}" data-action="editar-cancha">
                                 <i data-lucide="pencil"></i>
                             </button>
-                            <button class="action-btn view"   title="Ver disponibilidad" data-id="${c.id}" data-action="ver-disp-cancha" style="background:var(--clr-purple-soft,#ede9fe);color:var(--clr-purple,#7c3aed)">
+                            <button class="action-btn view" title="${c.estado === 'activa' ? 'Ver disponibilidad' : 'Cancha inactiva (Disponibilidad bloqueada)'}" data-id="${c.id}" data-action="${c.estado === 'activa' ? 'ver-disp-cancha' : 'inactiva-disp'}" style="${c.estado !== 'activa' ? 'opacity: 0.5;' : ''}">
                                 <i data-lucide="calendar-clock"></i>
                             </button>
                             <button class="action-btn toggle" title="${c.estado === 'activa' ? 'Dar de baja' : 'Reactivar'}"
@@ -284,7 +287,7 @@ const CanchasView = (() => {
                             <button class="action-btn edit" title="Editar" data-id="${t.id}" data-action="editar-tipo">
                                 <i data-lucide="pencil"></i>
                             </button>
-                            <button class="action-btn delete" title="Eliminar" data-id="${t.id}" data-action="baja-tipo">
+                            <button class="action-btn toggle" title="Eliminar" data-id="${t.id}" data-action="baja-tipo">
                                 <i data-lucide="trash-2"></i>
                             </button>
                         </div>
@@ -321,8 +324,14 @@ const CanchasView = (() => {
         const tipo   = cancha ? tiposCanchas.find(t => t.id === cancha.idTipo) : null;
         const disps  = disponibilidades.filter(d => d.idCancha === cancha?.id);
 
-        const disponiblesCount = disps.filter(d => d.disponible).length;
-        const bloqueadasCount  = disps.filter(d => !d.disponible).length;
+        let horasDisponiblesCount = 0;
+        let horasBloqueadasCount = 0;
+
+        disps.forEach(d => {
+            const horas = d.horaFin - d.horaInicio;
+            if (d.disponible) horasDisponiblesCount += horas;
+            else horasBloqueadasCount += horas;
+        });
 
         return `
             <div class="crud-toolbar">
@@ -330,16 +339,16 @@ const CanchasView = (() => {
                     <h2 class="crud-title">Disponibilidad de Canchas</h2>
                 </div>
                 <div class="crud-toolbar-right">
-                    <button class="btn-primary-action" id="btn-nueva-disp">
+                    <button class="btn-primary-action" id="btn-nueva-disp" ${!cancha ? 'disabled style="opacity:0.5"' : ''}>
                         <i data-lucide="plus"></i> Agregar franja
                     </button>
                 </div>
             </div>
 
             <div class="disp-layout">
-
                 <aside class="cancha-selector">
-                    <p class="cancha-selector-title">Seleccionar cancha</p>
+                    <p class="cancha-selector-title">Seleccionar cancha (Activas)</p>
+                    ${canchasActivas.length === 0 ? '<p style="font-size:0.85rem; color:var(--text-light); text-align:center; padding: 20px 0;">No hay canchas operativas.</p>' : ''}
                     ${canchasActivas.map(c => {
                         const t = tiposCanchas.find(t => t.id === c.idTipo);
                         return `
@@ -356,14 +365,45 @@ const CanchasView = (() => {
                 </aside>
 
                 <div class="disp-main" id="disp-main-panel">
-                    ${renderDispMain(cancha, tipo, disps, disponiblesCount, bloqueadasCount)}
+                    ${renderDispMain(cancha, tipo, disps, horasDisponiblesCount, horasBloqueadasCount)}
                 </div>
             </div>
         `;
     }
 
-    function renderDispMain(cancha, tipo, disps, disponiblesCount, bloqueadasCount) {
-        if (!cancha) return `<div class="tabla-empty"><p>No hay canchas activas.</p></div>`;
+    function renderDispMain(cancha, tipo, disps, horasDisponiblesCount, horasBloqueadasCount) {
+        if (!cancha) return `<div class="tabla-empty"><p>Seleccione una cancha activa para configurar su disponibilidad.</p></div>`;
+
+        const dispsSorted = [...disps].sort((a, b) => {
+            const d1 = DIAS.indexOf(a.diaSemana);
+            const d2 = DIAS.indexOf(b.diaSemana);
+            if (d1 !== d2) return d1 - d2;
+            return a.horaInicio - b.horaInicio;
+        });
+
+        const filas = dispsSorted.length === 0
+            ? `<tr><td colspan="5" class="tabla-empty"><p>Sin franjas configuradas.</p></td></tr>`
+            : dispsSorted.map(f => `
+                <tr>
+                    <td><strong>${f.diaSemana}</strong></td>
+                    <td>${padHora(f.horaInicio)}:00</td>
+                    <td>${padHora(f.horaFin)}:00</td>
+                    <td>${f.disponible ? '<span class="badge success">Habilitada</span>' : '<span class="badge danger">Bloqueada</span>'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn view" title="${f.disponible ? 'Bloquear' : 'Habilitar'}" data-id="${f.id}" data-action="toggle-disp">
+                                <i data-lucide="${f.disponible ? 'eye-off' : 'eye'}"></i>
+                            </button>
+                            <button class="action-btn edit" title="Editar" data-id="${f.id}" data-action="editar-disp">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            <button class="action-btn toggle" title="Eliminar franja" data-id="${f.id}" data-action="eliminar-disp">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
 
         return `
             <div class="cancha-info-banner">
@@ -375,69 +415,38 @@ const CanchasView = (() => {
                     </div>
                 </div>
                 <div class="cancha-info-stats">
-                    <span class="mini-stat-inline green">${disponiblesCount} franjas habilitadas</span>
-                    <span class="mini-stat-inline red">${bloqueadasCount} bloqueadas</span>
+                    <span class="mini-stat-inline green">${horasDisponiblesCount} hs habilitadas</span>
+                    <span class="mini-stat-inline red">${horasBloqueadasCount} hs bloqueadas</span>
                 </div>
             </div>
 
-            <div class="disp-grid-semana" id="disp-semana-grid">
-                ${renderSemanaGrid(cancha, disps)}
+            <div class="panel-card tabla-panel" style="margin-top: 16px;">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filas}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         `;
     }
 
-    function renderSemanaGrid(cancha, disps) {
-        return DIAS.map(dia => {
-            const franjas = disps.filter(d => d.diaSemana === dia);
-            return `
-                <div class="disp-dia-card">
-                    <div class="disp-dia-header">
-                        <span class="disp-dia-nombre">${dia}</span>
-                        <span class="disp-dia-count">${franjas.length} franja${franjas.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    <div class="disp-dia-franjas">
-                        ${franjas.length === 0
-                            ? `<span class="disp-sin-franja">Sin franjas configuradas</span>`
-                            : franjas.map(f => `
-                                <div class="disp-franja ${f.disponible ? 'habilitada' : 'bloqueada'}">
-                                    <span class="disp-franja-hora">
-                                        <i data-lucide="clock"></i>
-                                        ${padHora(f.horaInicio)}:00 – ${padHora(f.horaFin)}:00
-                                    </span>
-                                    <div class="disp-franja-actions">
-                                        <button class="disp-toggle-btn ${f.disponible ? 'deshabilitar' : 'habilitar'}"
-                                                title="${f.disponible ? 'Bloquear' : 'Habilitar'}"
-                                                data-id="${f.id}" data-action="toggle-disp">
-                                            <i data-lucide="${f.disponible ? 'eye-off' : 'eye'}"></i>
-                                        </button>
-                                        <button class="disp-toggle-btn edit"
-                                                title="Editar franja"
-                                                data-id="${f.id}" data-action="editar-disp">
-                                            <i data-lucide="pencil"></i>
-                                        </button>
-                                        <button class="disp-toggle-btn delete"
-                                                title="Eliminar franja"
-                                                data-id="${f.id}" data-action="eliminar-disp">
-                                            <i data-lucide="trash-2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
     // =====================================================
-    //  MODALES: CANCHA
+    //  MODALES
     // =====================================================
 
     function renderModalCancha() {
-        const opcionesTipo = tiposCanchas.map(t =>
-            `<option value="${t.id}">${t.nombre}</option>`
-        ).join('');
+        const opcionesTipo = tiposCanchas.map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
         return `
             <div class="dash-modal-overlay" id="modal-cancha" role="dialog" aria-modal="true">
                 <div class="dash-modal">
@@ -475,8 +484,8 @@ const CanchasView = (() => {
                         </form>
                     </div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cancelar-modal-cancha">Cancelar</button>
-                        <button class="btn-primary" id="guardar-cancha">Guardar</button>
+                        <button class="btn-modal-cancel" id="cancelar-modal-cancha">Cancelar</button>
+                        <button class="btn-modal-save" id="guardar-cancha"><i data-lucide="save"></i> Guardar</button>
                     </div>
                 </div>
             </div>
@@ -491,10 +500,9 @@ const CanchasView = (() => {
                         <h3>Detalle de cancha</h3>
                         <button class="dash-modal-close" id="cerrar-detalle-cancha"><i data-lucide="x"></i></button>
                     </div>
-                    <div class="dash-modal-body" id="detalle-cancha-body">
-                        </div>
+                    <div class="dash-modal-body" id="detalle-cancha-body"></div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cerrar-detalle-cancha-2">Cerrar</button>
+                        <button class="btn-modal-cancel" id="cerrar-detalle-cancha-2">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -513,17 +521,13 @@ const CanchasView = (() => {
                         <p id="modal-baja-cancha-msg"></p>
                     </div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cancelar-baja-cancha">Cancelar</button>
-                        <button class="btn-danger" id="confirmar-baja-cancha">Confirmar</button>
+                        <button class="btn-modal-cancel" id="cancelar-baja-cancha">Cancelar</button>
+                        <button class="btn-modal-danger" id="confirmar-baja-cancha"><i data-lucide="power"></i> Confirmar</button>
                     </div>
                 </div>
             </div>
         `;
     }
-
-    // =====================================================
-    //  MODALES: TIPO DE CANCHA
-    // =====================================================
 
     function renderModalTipo() {
         return `
@@ -555,7 +559,7 @@ const CanchasView = (() => {
                                     <span class="form-error" id="err-ft-capacidad"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ft-duracion">Duración máx. reserva (min) <span class="req">*</span></label>
+                                    <label for="ft-duracion">Duración máx. (min) <span class="req">*</span></label>
                                     <input type="number" id="ft-duracion" min="30" step="30" placeholder="60">
                                     <span class="form-error" id="err-ft-duracion"></span>
                                 </div>
@@ -572,8 +576,8 @@ const CanchasView = (() => {
                         </form>
                     </div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cancelar-modal-tipo">Cancelar</button>
-                        <button class="btn-primary" id="guardar-tipo">Guardar</button>
+                        <button class="btn-modal-cancel" id="cancelar-modal-tipo">Cancelar</button>
+                        <button class="btn-modal-save" id="guardar-tipo"><i data-lucide="save"></i> Guardar</button>
                     </div>
                 </div>
             </div>
@@ -590,7 +594,7 @@ const CanchasView = (() => {
                     </div>
                     <div class="dash-modal-body" id="detalle-tipo-body"></div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cerrar-detalle-tipo-2">Cerrar</button>
+                        <button class="btn-modal-cancel" id="cerrar-detalle-tipo-2">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -609,28 +613,21 @@ const CanchasView = (() => {
                         <p id="modal-baja-tipo-msg"></p>
                     </div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cancelar-baja-tipo">Cancelar</button>
-                        <button class="btn-danger" id="confirmar-baja-tipo">Eliminar</button>
+                        <button class="btn-modal-cancel" id="cancelar-baja-tipo">Cancelar</button>
+                        <button class="btn-modal-danger" id="confirmar-baja-tipo"><i data-lucide="trash-2"></i> Eliminar</button>
                     </div>
                 </div>
             </div>
         `;
     }
 
-    // =====================================================
-    //  MODAL: DISPONIBILIDAD
-    // =====================================================
-
     function renderModalDisponibilidad() {
+        // En el modal solo se pueden asociar franjas a canchas activas
         const opcionesCancha = canchas.filter(c => c.estado === 'activa').map(c =>
             `<option value="${c.id}">${c.nombre}</option>`
         ).join('');
-        const opcionesDia = DIAS.map(d =>
-            `<option value="${d}">${d}</option>`
-        ).join('');
-        const opcionesHora = Array.from({length: 24}, (_, i) =>
-            `<option value="${i}">${padHora(i)}:00</option>`
-        ).join('');
+        const opcionesDia = DIAS.map(d => `<option value="${d}">${d}</option>`).join('');
+        const opcionesHora = Array.from({length: 24}, (_, i) => `<option value="${i}">${padHora(i)}:00</option>`).join('');
 
         return `
             <div class="dash-modal-overlay" id="modal-disp" role="dialog" aria-modal="true">
@@ -670,17 +667,15 @@ const CanchasView = (() => {
                                     <span class="form-error" id="err-fd-fin"></span>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-check-label">
-                                    <input type="checkbox" id="fd-disponible" checked>
-                                    Franja habilitada desde el alta
-                                </label>
+                            <div class="form-group" style="flex-direction: row; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="fd-disponible" checked style="width: auto;">
+                                <label for="fd-disponible" style="margin: 0; font-weight: normal;">Franja habilitada desde el alta</label>
                             </div>
                         </form>
                     </div>
                     <div class="dash-modal-footer">
-                        <button class="btn-secondary" id="cancelar-modal-disp">Cancelar</button>
-                        <button class="btn-primary" id="guardar-disp">Guardar</button>
+                        <button class="btn-modal-cancel" id="cancelar-modal-disp">Cancelar</button>
+                        <button class="btn-modal-save" id="guardar-disp"><i data-lucide="save"></i> Guardar</button>
                     </div>
                 </div>
             </div>
@@ -688,20 +683,15 @@ const CanchasView = (() => {
     }
 
     // =====================================================
-    //  INIT — DELEGACIÓN DE EVENTOS PRINCIPAL
+    //  INIT Y DELEGACIÓN DE EVENTOS
     // =====================================================
 
     function init() {
         const root = document.querySelector('.canchas-module');
-        if (!root) return;
-
-        // Evitar doble binding si se llama a init accidentalmente de nuevo sin limpiar DOM
-        if (root.dataset.initialized === 'true') return;
+        if (!root || root.dataset.initialized === 'true') return;
         root.dataset.initialized = 'true';
 
-        // 1) DELEGACIÓN DE EVENTOS CLICK
         root.addEventListener('click', e => {
-            // Manejo de TABS
             const tabBtn = e.target.closest('.module-tab');
             if (tabBtn) {
                 tabActivo = tabBtn.dataset.tab;
@@ -709,28 +699,24 @@ const CanchasView = (() => {
                 return;
             }
 
-            // Manejo de botones dinámicos (tablas, lista lateral)
             const actionBtn = e.target.closest('[data-action]');
             if (actionBtn) {
                 const action = actionBtn.dataset.action;
                 const id = parseInt(actionBtn.dataset.id);
-
                 switch(action) {
                     case 'ver-cancha':      verDetalleCancha(id); break;
                     case 'editar-cancha':   abrirFormCancha(id); break;
                     case 'baja-cancha':     confirmarBajaCancha(id); break;
                     case 'ver-disp-cancha':
-                        canchaSelDispId = id;
-                        tabActivo = 'disponibilidad';
-                        refreshModulo();
+                        canchaSelDispId = id; tabActivo = 'disponibilidad'; refreshModulo();
+                        break;
+                    case 'inactiva-disp':
+                        mostrarToast('Debe reactivar la cancha para ver su disponibilidad', 'warning');
                         break;
                     case 'ver-tipo':        verDetalleTipo(id); break;
                     case 'editar-tipo':     abrirFormTipo(id); break;
                     case 'baja-tipo':       confirmarBajaTipo(id); break;
-                    case 'sel-cancha-disp':
-                        canchaSelDispId = id;
-                        refreshDispPanel();
-                        break;
+                    case 'sel-cancha-disp': canchaSelDispId = id; refreshDispPanel(); break;
                     case 'toggle-disp':     toggleDisp(id); break;
                     case 'editar-disp':     abrirFormDisp(id); break;
                     case 'eliminar-disp':   eliminarDisp(id); break;
@@ -738,66 +724,37 @@ const CanchasView = (() => {
                 return;
             }
 
-            // Manejo de botones fijos / modales por ID
             const targetId = e.target.id || e.target.closest('button')?.id;
             if (!targetId) {
-                // Cerrar modales si hacen click en el overlay oscuro exterior
-                if (e.target.classList.contains('dash-modal-overlay')) {
-                    cerrarModal(e.target.id);
-                }
+                if (e.target.classList.contains('dash-modal-overlay')) cerrarModal(e.target.id);
                 return;
             }
 
             switch(targetId) {
-                // Canchas
-                case 'btn-limpiar-filtro-canchas':
-                    filtroCanchas = '';
-                    const sc = document.getElementById('search-canchas');
-                    if (sc) sc.value = '';
-                    refreshTablaCanchas();
-                    break;
+                case 'btn-limpiar-filtro-canchas': filtroCanchas = ''; document.getElementById('search-canchas').value = ''; refreshTablaCanchas(); break;
                 case 'btn-nueva-cancha': abrirFormCancha(null); break;
                 case 'guardar-cancha':   guardarCancha(); break;
-                case 'cancelar-modal-cancha':
-                case 'cerrar-modal-cancha': cerrarModal('modal-cancha'); break;
-                case 'cerrar-detalle-cancha':
-                case 'cerrar-detalle-cancha-2': cerrarModal('modal-detalle-cancha'); break;
-                case 'cancelar-baja-cancha':
-                case 'cerrar-modal-baja-cancha': cerrarModal('modal-baja-cancha'); break;
+                case 'cancelar-modal-cancha': case 'cerrar-modal-cancha': cerrarModal('modal-cancha'); break;
+                case 'cerrar-detalle-cancha': case 'cerrar-detalle-cancha-2': cerrarModal('modal-detalle-cancha'); break;
+                case 'cancelar-baja-cancha': case 'cerrar-modal-baja-cancha': cerrarModal('modal-baja-cancha'); break;
                 case 'confirmar-baja-cancha': ejecutarBajaCancha(); break;
 
-                // Tipos
                 case 'btn-nuevo-tipo': abrirFormTipo(null); break;
                 case 'guardar-tipo':   guardarTipo(); break;
-                case 'cancelar-modal-tipo':
-                case 'cerrar-modal-tipo': cerrarModal('modal-tipo'); break;
-                case 'cerrar-detalle-tipo':
-                case 'cerrar-detalle-tipo-2': cerrarModal('modal-detalle-tipo'); break;
-                case 'cancelar-baja-tipo':
-                case 'cerrar-modal-baja-tipo': cerrarModal('modal-baja-tipo'); break;
+                case 'cancelar-modal-tipo': case 'cerrar-modal-tipo': cerrarModal('modal-tipo'); break;
+                case 'cerrar-detalle-tipo': case 'cerrar-detalle-tipo-2': cerrarModal('modal-detalle-tipo'); break;
+                case 'cancelar-baja-tipo': case 'cerrar-modal-baja-tipo': cerrarModal('modal-baja-tipo'); break;
                 case 'confirmar-baja-tipo': ejecutarBajaTipo(); break;
 
-                // Disponibilidad
-                case 'btn-nueva-disp':
-                    abrirFormDisp(null);
-                    const sel = document.getElementById('fd-cancha');
-                    if (sel) sel.value = canchaSelDispId;
-                    break;
+                case 'btn-nueva-disp': abrirFormDisp(null); document.getElementById('fd-cancha').value = canchaSelDispId; break;
                 case 'guardar-disp': guardarDisp(); break;
-                case 'cancelar-modal-disp':
-                case 'cerrar-modal-disp': cerrarModal('modal-disp'); break;
+                case 'cancelar-modal-disp': case 'cerrar-modal-disp': cerrarModal('modal-disp'); break;
             }
         });
 
-        // 2) DELEGACIÓN DE EVENTOS INPUT (búsquedas en vivo)
         root.addEventListener('input', e => {
-            if (e.target.id === 'search-canchas') {
-                filtroCanchas = e.target.value;
-                refreshTablaCanchas();
-            } else if (e.target.id === 'search-tipos') {
-                filtroTipos = e.target.value;
-                refreshTablaTipos();
-            }
+            if (e.target.id === 'search-canchas') { filtroCanchas = e.target.value; refreshTablaCanchas(); }
+            else if (e.target.id === 'search-tipos') { filtroTipos = e.target.value; refreshTablaTipos(); }
         });
     }
 
@@ -818,80 +775,80 @@ const CanchasView = (() => {
     }
 
     function guardarCancha() {
-        const id     = document.getElementById('fc-id').value;
+        const id = document.getElementById('fc-id').value;
         const numero = parseInt(document.getElementById('fc-numero').value);
         const nombre = document.getElementById('fc-nombre').value.trim();
         const idTipo = parseInt(document.getElementById('fc-tipo').value);
-        const desc   = document.getElementById('fc-descripcion').value.trim();
-
+        const desc = document.getElementById('fc-descripcion').value.trim();
+        
         let ok = true;
-        if (!numero || numero < 1)    { setFormError('err-fc-numero', 'Ingrese un número válido'); ok = false; }
-        if (nombre.length < 2)        { setFormError('err-fc-nombre', 'Nombre muy corto'); ok = false; }
-        if (!idTipo)                  { setFormError('err-fc-tipo',   'Seleccione un tipo'); ok = false; }
+        if (!numero || numero < 1) { setFormError('err-fc-numero', 'Válido'); ok = false; }
+        if (nombre.length < 2) { setFormError('err-fc-nombre', 'Muy corto'); ok = false; }
+        if (!idTipo) { setFormError('err-fc-tipo', 'Seleccione'); ok = false; }
+        
+        // Validación de Número Único
+        if (canchas.some(c => c.numero === numero && (!id || c.id !== parseInt(id)))) {
+            setFormError('err-fc-numero', 'Este número de cancha ya está en uso');
+            ok = false;
+        }
+
         if (!ok) return;
 
         if (id) {
             const c = canchas.find(x => x.id === parseInt(id));
-            if (c) { c.numero = numero; c.nombre = nombre; c.idTipo = idTipo; c.descripcion = desc; }
-            mostrarToast('Cancha actualizada correctamente.');
+            if (c) Object.assign(c, { numero, nombre, idTipo, descripcion: desc });
+            mostrarToast('Cancha actualizada.');
         } else {
             canchas.push({ id: nextCanchaId++, numero, nombre, idTipo, estado: 'activa', descripcion: desc, imagen: '' });
-            mostrarToast('Cancha registrada correctamente.');
+            mostrarToast('Cancha registrada.');
         }
-        cerrarModal('modal-cancha');
-        refreshModulo();
+        cerrarModal('modal-cancha'); refreshModulo();
     }
 
     function verDetalleCancha(id) {
-        const c = canchas.find(x => x.id === id);
-        if (!c) return;
+        const c = canchas.find(x => x.id === id); if (!c) return;
         const tipo = tiposCanchas.find(t => t.id === c.idTipo);
-        const dispsCancha = disponibilidades.filter(d => d.idCancha === id);
-        const franjas = DIAS.map(dia => {
-            const f = dispsCancha.find(d => d.diaSemana === dia);
-            if (!f) return `<li class="det-dia neutral">${dia}: <em>Sin configurar</em></li>`;
-            return `<li class="det-dia ${f.disponible ? 'ok' : 'bloq'}">${dia}: ${padHora(f.horaInicio)}:00–${padHora(f.horaFin)}:00 ${f.disponible ? '<span class="badge success">Habilitada</span>' : '<span class="badge danger">Bloqueada</span>'}</li>`;
-        }).join('');
-
         document.getElementById('detalle-cancha-body').innerHTML = `
             <div class="detalle-grid">
                 <div class="det-row"><span>Número</span><strong>${c.numero}</strong></div>
                 <div class="det-row"><span>Nombre</span><strong>${c.nombre}</strong></div>
                 <div class="det-row"><span>Tipo</span><strong>${tipo?.nombre || '—'}</strong></div>
-                <div class="det-row"><span>Superficie</span><strong>${tipo?.superficie || '—'}</strong></div>
-                <div class="det-row"><span>Capacidad</span><strong>${tipo?.capacidadJugadores || '—'} jugadores</strong></div>
+                <div class="det-row"><span>Capacidad</span><strong>${tipo?.capacidadJugadores || '—'} jug.</strong></div>
                 <div class="det-row"><span>Precio/hora</span><strong>${tipo ? '$' + tipo.precioHora.toLocaleString('es-AR') : '—'}</strong></div>
                 <div class="det-row"><span>Estado</span>${badgeEstado(c.estado)}</div>
                 <div class="det-row full"><span>Descripción</span><strong>${c.descripcion || '—'}</strong></div>
             </div>
-            <h4 class="det-subtitle">Disponibilidad semanal</h4>
-            <ul class="det-disponibilidad">${franjas}</ul>
         `;
-        reinitLucide();
         abrirModal('modal-detalle-cancha');
     }
 
     function confirmarBajaCancha(id) {
-        const c = canchas.find(x => x.id === id);
-        if (!c) return;
-        bajaTargetCanchaId = id;
-        const esBaja = c.estado === 'activa';
+        const c = canchas.find(x => x.id === id); if (!c) return;
+        bajaTargetCanchaId = id; const esBaja = c.estado === 'activa';
         document.getElementById('modal-baja-cancha-titulo').textContent = esBaja ? 'Dar de baja' : 'Reactivar cancha';
-        document.getElementById('modal-baja-cancha-msg').textContent =
-            esBaja ? `¿Dar de baja a "${c.nombre}"? No estará disponible para reservas.`
-                   : `¿Reactivar "${c.nombre}"? Volverá a estar disponible.`;
+        document.getElementById('modal-baja-cancha-msg').textContent = esBaja ? `¿Dar de baja a "${c.nombre}"? Se bloquearán todas sus disponibilidades vinculadas.` : `¿Reactivar "${c.nombre}"?`;
         abrirModal('modal-baja-cancha');
     }
 
     function ejecutarBajaCancha() {
         if (!bajaTargetCanchaId) return;
         const c = canchas.find(x => x.id === bajaTargetCanchaId);
-        if (!c) return;
-        const esBaja = c.estado === 'activa';
-        c.estado = esBaja ? 'inactiva' : 'activa';
-        cerrarModal('modal-baja-cancha');
-        mostrarToast(esBaja ? `"${c.nombre}" dada de baja.` : `"${c.nombre}" reactivada.`, esBaja ? 'warning' : 'success');
-        bajaTargetCanchaId = null;
+        
+        if (c) {
+            const esBaja = c.estado === 'activa';
+            c.estado = esBaja ? 'inactiva' : 'activa';
+            
+            // Lógica de integridad: Si damos de baja la cancha, su disponibilidad queda bloqueada
+            if (c.estado === 'inactiva') {
+                disponibilidades.forEach(d => {
+                    if (d.idCancha === c.id) d.disponible = false;
+                });
+            }
+        }
+        
+        cerrarModal('modal-baja-cancha'); 
+        mostrarToast(`Estado de "${c.nombre}" actualizado.`);
+        bajaTargetCanchaId = null; 
         refreshModulo();
     }
 
@@ -901,90 +858,66 @@ const CanchasView = (() => {
 
     function abrirFormTipo(id) {
         const t = id ? tiposCanchas.find(x => x.id === id) : null;
-        document.getElementById('modal-tipo-titulo').textContent = t ? 'Editar tipo' : 'Nuevo tipo de cancha';
-        document.getElementById('ft-id').value          = t?.id || '';
-        document.getElementById('ft-nombre').value      = t?.nombre || '';
-        document.getElementById('ft-superficie').value  = t?.superficie || '';
-        document.getElementById('ft-capacidad').value   = t?.capacidadJugadores || '';
-        document.getElementById('ft-duracion').value    = t?.duracionMaxReservaMin || '';
-        document.getElementById('ft-precio').value      = t?.precioHora || '';
+        document.getElementById('modal-tipo-titulo').textContent = t ? 'Editar tipo' : 'Nuevo tipo';
+        document.getElementById('ft-id').value = t?.id || ''; document.getElementById('ft-nombre').value = t?.nombre || '';
+        document.getElementById('ft-superficie').value = t?.superficie || ''; document.getElementById('ft-capacidad').value = t?.capacidadJugadores || '';
+        document.getElementById('ft-duracion').value = t?.duracionMaxReservaMin || ''; document.getElementById('ft-precio').value = t?.precioHora || '';
         document.getElementById('ft-descripcion').value = t?.descripcion || '';
         limpiarErrores(['err-ft-nombre','err-ft-superficie','err-ft-capacidad','err-ft-duracion','err-ft-precio']);
         abrirModal('modal-tipo');
     }
 
     function guardarTipo() {
-        const id          = document.getElementById('ft-id').value;
-        const nombre      = document.getElementById('ft-nombre').value.trim();
-        const superficie  = document.getElementById('ft-superficie').value.trim();
-        const capacidad   = parseInt(document.getElementById('ft-capacidad').value);
-        const duracion    = parseInt(document.getElementById('ft-duracion').value);
-        const precio      = parseFloat(document.getElementById('ft-precio').value);
-        const descripcion = document.getElementById('ft-descripcion').value.trim();
-
+        const id = document.getElementById('ft-id').value, nombre = document.getElementById('ft-nombre').value.trim();
+        const sup = document.getElementById('ft-superficie').value.trim(), cap = parseInt(document.getElementById('ft-capacidad').value);
+        const dur = parseInt(document.getElementById('ft-duracion').value), pre = parseFloat(document.getElementById('ft-precio').value);
+        const desc = document.getElementById('ft-descripcion').value.trim();
+        
         let ok = true;
-        if (nombre.length < 2)      { setFormError('err-ft-nombre',      'Nombre muy corto'); ok = false; }
-        if (superficie.length < 2)  { setFormError('err-ft-superficie',  'Ingrese la superficie'); ok = false; }
-        if (!capacidad || capacidad < 2) { setFormError('err-ft-capacidad', 'Capacidad mínima: 2'); ok = false; }
-        if (!duracion  || duracion < 30) { setFormError('err-ft-duracion',  'Mínimo 30 minutos'); ok = false; }
-        if (!precio    || precio   < 0)  { setFormError('err-ft-precio',    'Precio inválido'); ok = false; }
+        if (nombre.length < 2) { setFormError('err-ft-nombre', 'Muy corto'); ok = false; }
+        if (sup.length < 2) { setFormError('err-ft-superficie', 'Requerido'); ok = false; }
+        if (!cap || cap < 2) { setFormError('err-ft-capacidad', 'Mín. 2'); ok = false; }
+        if (!dur || dur < 30) { setFormError('err-ft-duracion', 'Mín. 30'); ok = false; }
+        if (!pre || pre < 0) { setFormError('err-ft-precio', 'Inválido'); ok = false; }
         if (!ok) return;
 
         if (id) {
             const t = tiposCanchas.find(x => x.id === parseInt(id));
-            if (t) Object.assign(t, { nombre, superficie, capacidadJugadores: capacidad, duracionMaxReservaMin: duracion, precioHora: precio, descripcion });
-            mostrarToast('Tipo de cancha actualizado.');
+            if (t) Object.assign(t, { nombre, superficie: sup, capacidadJugadores: cap, duracionMaxReservaMin: dur, precioHora: pre, descripcion: desc });
+            mostrarToast('Tipo actualizado.');
         } else {
-            tiposCanchas.push({ id: nextTipoId++, nombre, superficie, capacidadJugadores: capacidad, duracionMaxReservaMin: duracion, precioHora: precio, descripcion });
-            mostrarToast('Tipo de cancha registrado.');
+            tiposCanchas.push({ id: nextTipoId++, nombre, superficie: sup, capacidadJugadores: cap, duracionMaxReservaMin: dur, precioHora: pre, descripcion: desc });
+            mostrarToast('Tipo registrado.');
         }
-        cerrarModal('modal-tipo');
-        refreshModulo();
+        cerrarModal('modal-tipo'); refreshModulo();
     }
 
     function verDetalleTipo(id) {
-        const t = tiposCanchas.find(x => x.id === id);
-        if (!t) return;
-        const uso = canchas.filter(c => c.idTipo === id);
+        const t = tiposCanchas.find(x => x.id === id); if (!t) return;
         document.getElementById('detalle-tipo-body').innerHTML = `
             <div class="detalle-grid">
                 <div class="det-row"><span>Nombre</span><strong>${t.nombre}</strong></div>
                 <div class="det-row"><span>Superficie</span><strong>${t.superficie}</strong></div>
-                <div class="det-row"><span>Capacidad</span><strong>${t.capacidadJugadores} jugadores</strong></div>
-                <div class="det-row"><span>Duración máx.</span><strong>${t.duracionMaxReservaMin} minutos</strong></div>
+                <div class="det-row"><span>Capacidad</span><strong>${t.capacidadJugadores} jug.</strong></div>
+                <div class="det-row"><span>Duración máx.</span><strong>${t.duracionMaxReservaMin} min</strong></div>
                 <div class="det-row"><span>Precio/hora</span><strong>$${t.precioHora.toLocaleString('es-AR')}</strong></div>
                 <div class="det-row full"><span>Descripción</span><strong>${t.descripcion || '—'}</strong></div>
             </div>
-            <h4 class="det-subtitle">Canchas con este tipo (${uso.length})</h4>
-            <ul class="det-lista">
-                ${uso.length === 0 ? '<li>Sin canchas asignadas.</li>' : uso.map(c => `<li>${c.nombre} — ${badgeEstado(c.estado)}</li>`).join('')}
-            </ul>
         `;
-        reinitLucide();
         abrirModal('modal-detalle-tipo');
     }
 
     function confirmarBajaTipo(id) {
-        const t = tiposCanchas.find(x => x.id === id);
-        if (!t) return;
+        const t = tiposCanchas.find(x => x.id === id); if (!t) return;
         const uso = canchas.filter(c => c.idTipo === id).length;
-        if (uso > 0) {
-            mostrarToast(`No se puede eliminar: ${uso} cancha(s) usan este tipo.`, 'error');
-            return;
-        }
-        bajaTargetTipoId = id;
-        document.getElementById('modal-baja-tipo-msg').textContent = `¿Eliminar el tipo "${t.nombre}"? Esta acción no se puede deshacer.`;
-        abrirModal('modal-baja-tipo');
+        if (uso > 0) { mostrarToast(`En uso por ${uso} cancha(s).`, 'error'); return; }
+        bajaTargetTipoId = id; document.getElementById('modal-baja-tipo-msg').textContent = `¿Eliminar "${t.nombre}"?`; abrirModal('modal-baja-tipo');
     }
 
     function ejecutarBajaTipo() {
-        if (!bajaTargetTipoId) return;
-        const t = tiposCanchas.find(x => x.id === bajaTargetTipoId);
+        if (!bajaTargetTipoId) return; 
         tiposCanchas = tiposCanchas.filter(x => x.id !== bajaTargetTipoId);
-        cerrarModal('modal-baja-tipo');
-        mostrarToast(`Tipo "${t?.nombre || ''}" eliminado.`, 'warning');
-        bajaTargetTipoId = null;
-        refreshModulo();
+        cerrarModal('modal-baja-tipo'); mostrarToast('Tipo eliminado.'); bajaTargetTipoId = null; refreshModulo();
     }
 
     // =====================================================
@@ -992,202 +925,135 @@ const CanchasView = (() => {
     // =====================================================
 
     function toggleDisp(id) {
-        const d = disponibilidades.find(x => x.id === id);
-        if (!d) return;
-        d.disponible = !d.disponible;
-        mostrarToast(d.disponible ? 'Franja habilitada.' : 'Franja bloqueada.', d.disponible ? 'success' : 'warning');
-        refreshDispPanel();
+        const d = disponibilidades.find(x => x.id === id); if (!d) return;
+        d.disponible = !d.disponible; mostrarToast(d.disponible ? 'Habilitada.' : 'Bloqueada.'); refreshDispPanel();
     }
 
     function eliminarDisp(id) {
-        if (!confirm('¿Eliminar esta franja horaria?')) return;
-        disponibilidades = disponibilidades.filter(x => x.id !== id);
-        mostrarToast('Franja eliminada.', 'warning');
-        refreshDispPanel();
+        if (!confirm('¿Eliminar franja?')) return;
+        disponibilidades = disponibilidades.filter(x => x.id !== id); mostrarToast('Eliminada.'); refreshDispPanel();
     }
 
     function abrirFormDisp(id) {
         const d = id ? disponibilidades.find(x => x.id === id) : null;
-        document.getElementById('modal-disp-titulo').textContent = d ? 'Editar franja' : 'Nueva franja horaria';
-        document.getElementById('fd-id').value          = d?.id || '';
-        document.getElementById('fd-cancha').value      = d?.idCancha || canchaSelDispId || '';
-        document.getElementById('fd-dia').value         = d?.diaSemana || '';
-        document.getElementById('fd-inicio').value      = d?.horaInicio ?? 8;
-        document.getElementById('fd-fin').value         = d?.horaFin    ?? 23;
+        document.getElementById('modal-disp-titulo').textContent = d ? 'Editar franja' : 'Nueva franja';
+        document.getElementById('fd-id').value = d?.id || ''; 
+        document.getElementById('fd-cancha').value = d?.idCancha || canchaSelDispId || '';
+        document.getElementById('fd-dia').value = d?.diaSemana || ''; 
+        document.getElementById('fd-inicio').value = d?.horaInicio ?? 8;
+        document.getElementById('fd-fin').value = d?.horaFin ?? 23; 
         document.getElementById('fd-disponible').checked = d ? d.disponible : true;
-        limpiarErrores(['err-fd-cancha','err-fd-dia','err-fd-inicio','err-fd-fin']);
-        abrirModal('modal-disp');
+        limpiarErrores(['err-fd-cancha','err-fd-dia','err-fd-inicio','err-fd-fin']); abrirModal('modal-disp');
     }
 
     function guardarDisp() {
-        const id        = document.getElementById('fd-id').value;
-        const idCancha  = parseInt(document.getElementById('fd-cancha').value);
-        const diaSemana = document.getElementById('fd-dia').value;
-        const horaInicio = parseInt(document.getElementById('fd-inicio').value);
-        const horaFin    = parseInt(document.getElementById('fd-fin').value);
-        const disponible = document.getElementById('fd-disponible').checked;
-
+        const id = document.getElementById('fd-id').value;
+        const idCancha = parseInt(document.getElementById('fd-cancha').value);
+        const dia = document.getElementById('fd-dia').value;
+        const inicio = parseInt(document.getElementById('fd-inicio').value);
+        const fin = parseInt(document.getElementById('fd-fin').value);
+        const disp = document.getElementById('fd-disponible').checked;
+        
         let ok = true;
-        if (!idCancha)    { setFormError('err-fd-cancha',  'Seleccione una cancha'); ok = false; }
-        if (!diaSemana)   { setFormError('err-fd-dia',     'Seleccione un día'); ok = false; }
-        if (horaFin <= horaInicio) { setFormError('err-fd-fin', 'La hora de fin debe ser mayor a la de inicio'); ok = false; }
+        limpiarErrores(['err-fd-cancha','err-fd-dia','err-fd-inicio','err-fd-fin']);
+
+        if (!idCancha) { setFormError('err-fd-cancha', 'Requerido'); ok = false; }
+        if (!dia) { setFormError('err-fd-dia', 'Requerido'); ok = false; }
+        if (fin <= inicio) { setFormError('err-fd-fin', 'Debe ser mayor al inicio'); ok = false; }
+
+        if (ok) {
+            // Validación Lógica de Solapamiento
+            const solapado = disponibilidades.some(d => {
+                if (d.idCancha !== idCancha || d.diaSemana !== dia) return false;
+                if (id && d.id === parseInt(id)) return false; 
+                // Lógica principal de Overlap: El inicio nuevo es menor al fin guardado Y el fin nuevo es mayor al inicio guardado
+                return (inicio < d.horaFin) && (fin > d.horaInicio);
+            });
+
+            if (solapado) {
+                setFormError('err-fd-inicio', 'Solapamiento con otra franja');
+                setFormError('err-fd-fin', 'Verifique el horario');
+                mostrarToast('El horario se solapa con una franja existente para ese día.', 'error');
+                ok = false;
+            }
+        }
+
         if (!ok) return;
 
         if (id) {
             const d = disponibilidades.find(x => x.id === parseInt(id));
-            if (d) Object.assign(d, { idCancha, diaSemana, horaInicio, horaFin, disponible });
+            if (d) Object.assign(d, { idCancha, diaSemana: dia, horaInicio: inicio, horaFin: fin, disponible: disp });
             mostrarToast('Franja actualizada.');
         } else {
-            disponibilidades.push({ id: nextDispId++, idCancha, diaSemana, horaInicio, horaFin, disponible });
+            disponibilidades.push({ id: nextDispId++, idCancha, diaSemana: dia, horaInicio: inicio, horaFin: fin, disponible: disp });
             mostrarToast('Franja registrada.');
         }
-        cerrarModal('modal-disp');
-        canchaSelDispId = idCancha;
+        
+        cerrarModal('modal-disp'); 
+        canchaSelDispId = idCancha; 
         refreshModulo();
     }
 
     // =====================================================
-    //  REFRESH HELPERS
+    //  REFRESH & UTILS
     // =====================================================
 
     function refreshModulo() {
         const content = document.getElementById('tab-content');
-        if (!content) return;
-        content.innerHTML = renderTabContent();
-        reinitLucide();
-        // NOTA: Eliminado el llamado a init(). La delegación de eventos ya maneja todo.
+        if (content) { content.innerHTML = renderTabContent(); reinitLucide(); }
     }
-
-    function refreshTablaCanchas() {
-        const container = document.getElementById('tabla-canchas-container');
-        if (container) {
-            container.innerHTML = renderTablaCanchas();
-            reinitLucide();
-        }
-    }
-
-    function refreshTablaTipos() {
-        const container = document.getElementById('tabla-tipos-container');
-        if (container) {
-            container.innerHTML = renderTablaTipos();
-            reinitLucide();
-        }
-    }
-
+    
+    function refreshTablaCanchas() { const c = document.getElementById('tabla-canchas-container'); if (c) { c.innerHTML = renderTablaCanchas(); reinitLucide(); } }
+    
+    function refreshTablaTipos() { const c = document.getElementById('tabla-tipos-container'); if (c) { c.innerHTML = renderTablaTipos(); reinitLucide(); } }
+    
     function refreshDispPanel() {
-        const cancha = canchas.find(c => c.id === canchaSelDispId);
-        const tipo   = cancha ? tiposCanchas.find(t => t.id === cancha.idTipo) : null;
-        const disps  = disponibilidades.filter(d => d.idCancha === cancha?.id);
-        const panel  = document.getElementById('disp-main-panel');
-        if (!panel) return;
-        panel.innerHTML = renderDispMain(cancha, tipo, disps,
-            disps.filter(d => d.disponible).length,
-            disps.filter(d => !d.disponible).length
-        );
-        reinitLucide();
-        // Actualizar selector activo en la vista lateral
-        document.querySelectorAll('.cancha-selector-item').forEach(btn => {
-            btn.classList.toggle('selected', parseInt(btn.dataset.id) === canchaSelDispId);
-        });
-    }
-
-    // =====================================================
-    //  UTILIDADES
-    // =====================================================
-
-    function canchasFiltradas() {
-        if (!filtroCanchas) return canchas;
-        const q = filtroCanchas.toLowerCase();
-        return canchas.filter(c => {
-            const tipo = tiposCanchas.find(t => t.id === c.idTipo);
-            return c.nombre.toLowerCase().includes(q) || tipo?.nombre.toLowerCase().includes(q);
-        });
-    }
-
-    function tiposFiltrados() {
-        if (!filtroTipos) return tiposCanchas;
-        const q = filtroTipos.toLowerCase();
-        return tiposCanchas.filter(t =>
-            t.nombre.toLowerCase().includes(q) || t.superficie.toLowerCase().includes(q)
-        );
-    }
-
-    function padHora(h) { return String(h).padStart(2, '0'); }
-
-    function badgeEstado(estado) {
-        return estado === 'activa'
-            ? `<span class="badge success">Activa</span>`
-            : `<span class="badge danger">Inactiva</span>`;
-    }
-
-    function abrirModal(id) {
-        const m = document.getElementById(id);
-        if (!m) return;
-        m.classList.add('activo');
-        document.body.style.overflow = 'hidden';
-        reinitLucide();
-    }
-
-    function cerrarModal(id) {
-        const m = document.getElementById(id);
-        if (!m) return;
-        m.classList.remove('activo');
-        document.body.style.overflow = '';
-    }
-
-    function setFormError(id, msg) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.textContent = msg;
-        const input = el.closest('.form-group')?.querySelector('input, select, textarea');
-        input?.classList.add('input-error-field');
-    }
-
-    function limpiarErrores(ids) {
-        ids.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.textContent = '';
-            const input = el.closest('.form-group')?.querySelector('input, select, textarea');
-            input?.classList.remove('input-error-field');
-        });
-    }
-
-    function reinitLucide() {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function mostrarToast(mensaje, tipo = 'success') {
-        let container = document.getElementById('toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'toast-container';
-            document.body.appendChild(container);
+        const c = canchas.find(x => x.id === canchaSelDispId);
+        const t = c ? tiposCanchas.find(x => x.id === c.idTipo) : null;
+        const d = disponibilidades.filter(x => x.idCancha === c?.id);
+        const p = document.getElementById('disp-main-panel');
+        
+        if (p) { 
+            let hd = 0, hb = 0;
+            d.forEach(franja => {
+                const horas = franja.horaFin - franja.horaInicio;
+                if (franja.disponible) hd += horas; else hb += horas;
+            });
+            p.innerHTML = renderDispMain(c, t, d, hd, hb); 
+            reinitLucide(); 
         }
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${tipo}`;
-        toast.innerHTML = `
-            <i data-lucide="${tipo === 'success' ? 'check-circle-2' : tipo === 'warning' ? 'alert-triangle' : 'x-circle'}"></i>
-            <span>${mensaje}</span>
-        `;
-        container.appendChild(toast);
-        reinitLucide();
-        requestAnimationFrame(() => toast.classList.add('toast-show'));
-        setTimeout(() => {
-            toast.classList.remove('toast-show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        document.querySelectorAll('.cancha-selector-item').forEach(b => b.classList.toggle('selected', parseInt(b.dataset.id) === canchaSelDispId));
     }
-
-    // =====================================================
-    //  EXPONER
-    // =====================================================
+    
+    function canchasFiltradas() { return filtroCanchas ? canchas.filter(c => c.nombre.toLowerCase().includes(filtroCanchas.toLowerCase()) || tiposCanchas.find(t => t.id === c.idTipo)?.nombre.toLowerCase().includes(filtroCanchas.toLowerCase())) : canchas; }
+    
+    function tiposFiltrados() { return filtroTipos ? tiposCanchas.filter(t => t.nombre.toLowerCase().includes(filtroTipos.toLowerCase()) || t.superficie.toLowerCase().includes(filtroTipos.toLowerCase())) : tiposCanchas; }
+    
+    function padHora(h) { return String(h).padStart(2, '0'); }
+    
+    function badgeEstado(e) { return e === 'activa' ? `<span class="badge success">Activa</span>` : `<span class="badge danger">Inactiva</span>`; }
+    
+    function abrirModal(id) { const m = document.getElementById(id); if (m) { m.classList.add('activo'); document.body.style.overflow = 'hidden'; reinitLucide(); } }
+    
+    function cerrarModal(id) { const m = document.getElementById(id); if (m) { m.classList.remove('activo'); document.body.style.overflow = ''; } }
+    
+    function setFormError(id, msg) { const e = document.getElementById(id); if (e) { e.textContent = msg; e.closest('.form-group')?.querySelector('input, select')?.classList.add('input-error-field'); } }
+    
+    function limpiarErrores(ids) { ids.forEach(id => { const e = document.getElementById(id); if (e) { e.textContent = ''; e.closest('.form-group')?.querySelector('input, select')?.classList.remove('input-error-field'); } }); }
+    
+    function reinitLucide() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+    
+    function mostrarToast(msg, tipo = 'success') {
+        let c = document.getElementById('toast-container');
+        if (!c) { c = document.createElement('div'); c.id = 'toast-container'; document.body.appendChild(c); }
+        const t = document.createElement('div'); t.className = `toast toast-${tipo}`;
+        t.innerHTML = `<i data-lucide="${tipo === 'success' ? 'check-circle-2' : tipo === 'warning' ? 'alert-triangle' : 'x-circle'}"></i><span>${msg}</span>`;
+        c.appendChild(t); reinitLucide();
+        requestAnimationFrame(() => t.classList.add('toast-show'));
+        setTimeout(() => { t.classList.remove('toast-show'); setTimeout(() => t.remove(), 300); }, 3000);
+    }
 
     return { render, init };
-
 })();
 
-// Registrar en el router principal
-if (typeof registerModule === 'function') {
-    registerModule('canchas', CanchasView);
-}
+if (typeof registerModule === 'function') { registerModule('canchas', CanchasView); }

@@ -40,13 +40,7 @@ const UsuariosView = (() => {
                 <div class="crud-toolbar-right">
                     <div class="search-box">
                         <i data-lucide="search"></i>
-                        <input
-                            type="text"
-                            id="search-usuarios"
-                            placeholder="Buscar por nombre, DNI o email…"
-                            value="${filtro}"
-                            autocomplete="off"
-                        >
+                        <input type="text" id="search-usuarios" placeholder="Buscar por nombre, DNI o email…" value="${filtro}" autocomplete="off">
                     </div>
                     <button class="btn-primary-action" id="btn-nuevo-usuario">
                         <i data-lucide="user-plus"></i>
@@ -92,7 +86,6 @@ const UsuariosView = (() => {
     // =====================================================
     //  TABLA
     // =====================================================
-
     function renderTabla() {
         const lista = usuariosFiltrados();
 
